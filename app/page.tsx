@@ -6,6 +6,7 @@ import { FeatureCard } from "@/components/ui/FeatureCard";
 import { ModuleCard } from "@/components/ui/ModuleCard";
 import { CTASection } from "@/components/ui/CTASection";
 import { ScreenshotViewer } from "@/components/ui/ScreenshotViewer";
+import { HeroDevices } from "@/components/ui/HeroDevices";
 import { siteCopy } from "@/content/copy";
 import { modules } from "@/content/modules";
 
@@ -32,14 +33,14 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight mb-6 leading-none">
-              Offerte-software voor
+              Van calculatie tot factuur
               <br />
-              timmerbedrijven{" "}
-              <span className="text-primary">die meer willen.</span>
+              in{" "}
+              <span className="text-primary">één platform.</span>
             </h1>
 
             <p className="mt-4 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-              {hero.subtitle}
+              OfferteHulp helpt je professionele offertes maken, klussen beheren en grip houden op je winst.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
@@ -62,19 +63,10 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Hero screenshot */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-16 lg:mt-20"
-          >
-            <ScreenshotViewer
-              src="/screenshots/modules/Offertes.png"
-              alt="OfferteHulp - Offertes overzicht met status monitoring"
-              priority
-            />
-          </motion.div>
+          {/* Hero multi-device mockup */}
+          <div className="mt-16 lg:mt-20">
+            <HeroDevices />
+          </div>
         </div>
       </section>
 
