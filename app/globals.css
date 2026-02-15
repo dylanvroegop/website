@@ -10,6 +10,36 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Emerald green primary (matches app) */
+  --color-primary: hsl(158 93% 40%);
+  --color-primary-foreground: hsl(0 0% 98%);
+  --color-secondary: #007BFF;
+  --color-dark-bg: #0a0a0a;
+  --color-dark-surface: #171717;
+  --color-success: hsl(158 93% 40%);
+  /* Additional colors from app */
+  --color-card: hsl(0 0% 14%);
+  --color-border: hsl(240 3.7% 15.9%);
+  --color-muted: hsl(240 5% 15%);
+  --color-muted-foreground: hsl(240 5% 65%);
+}
+
+/* Utility classes for emerald theme */
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+  }
+
+  .emerald-glow {
+    box-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
+  }
+
+  .gradient-emerald {
+    background: linear-gradient(to right, hsl(158 93% 50%), hsl(160 60% 45%));
+  }
 }
 
 @media (prefers-color-scheme: dark) {
