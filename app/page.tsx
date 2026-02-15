@@ -27,17 +27,12 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary mb-8 uppercase tracking-wide">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse" />
-              {hero.badge}
-            </div>
-
             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tight mb-6 leading-none">
-              Van calculatie tot factuur
-              <br />
-              in{" "}
-              <span className="text-primary">één platform.</span>
+              Offertes in minuten.
             </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-primary">
+              Met AI-gestuurde calculaties.
+            </p>
 
             <p className="mt-4 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
               OfferteHulp helpt je professionele offertes maken, klussen beheren en grip houden op je winst.
