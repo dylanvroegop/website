@@ -72,7 +72,7 @@ export function WorkflowPageContent() {
                     >
                       <ScreenshotViewer
                         src={extra.image}
-                        alt={`OfferteHulp - ${extra.title}`}
+                        alt={`Calvora - ${extra.title}`}
                         caption={extra.title}
                       />
                     </motion.div>
@@ -114,7 +114,7 @@ export function WorkflowPageContent() {
               >
                 <ScreenshotViewer
                   src={tab.screenshot}
-                  alt={`OfferteHulp Offerte Workspace - ${tab.name}`}
+                  alt={`Calvora Offerte Workspace - ${tab.name}`}
                 />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold text-white mb-1">

@@ -1,4 +1,4 @@
-// General site copy for the OfferteHulp marketing website
+// General site copy for the Calvora marketing website
 
 export const siteCopy = {
   // Hero section
@@ -6,7 +6,7 @@ export const siteCopy = {
     badge: 'Nieuw: AI-Gestuurde Calculaties',
     title: 'Offerte-software voor timmerbedrijven die meer willen',
     titleHighlight: 'meer willen',
-    subtitle: 'Van calculatie tot factuur in één platform. OfferteHulp helpt je professionele offertes maken, klussen beheren en grip houden op je winst.',
+    subtitle: 'Van calculatie tot factuur in één platform. Calvora helpt je professionele offertes maken, klussen beheren en grip houden op je winst.',
     primaryCTA: 'Plan een demo',
     secondaryCTA: 'Start proefperiode'
   },
@@ -38,7 +38,7 @@ export const siteCopy = {
   // Platform overview
   platform: {
     title: 'Alles in één platform',
-    subtitle: 'Van eerste klancontact tot betaling: OfferteHulp regelt het allemaal',
+    subtitle: 'Van eerste klancontact tot betaling: Calvora regelt het allemaal',
     pillars: [
       {
         icon: 'Calculator',
@@ -124,7 +124,7 @@ export const siteCopy = {
   // Final CTA
   finalCTA: {
     title: 'Klaar om te starten?',
-    subtitle: 'Sluit je aan bij timmerbedrijven die OfferteHulp al gebruiken',
+    subtitle: 'Sluit je aan bij timmerbedrijven die Calvora al gebruiken',
     primaryCTA: 'Plan een demo',
     secondaryCTA: 'Start 14-daagse proefperiode',
     benefits: [
@@ -270,7 +270,7 @@ export const siteCopy = {
       }
     ],
     contact: {
-      email: 'support@offertehulp.nl',
+      email: 'support@calvora.nl',
       responseTime: 'Binnen 24 uur op werkdagen'
     }
   },
@@ -293,7 +293,7 @@ export const siteCopy = {
     },
     trial: {
       title: 'Start je 14-daagse proefperiode',
-      description: 'Probeer OfferteHulp gratis en vrijblijvend',
+      description: 'Probeer Calvora gratis en vrijblijvend',
       cta: 'Start proefperiode',
       benefits: [
         'Geen creditcard vereist',
@@ -358,7 +358,7 @@ export const siteCopy = {
         { label: 'Voorwaarden', href: '#' }
       ]
     },
-    copyright: '© 2026 OfferteHulp. Alle rechten voorbehouden.',
+    copyright: '© 2026 Calvora. Alle rechten voorbehouden.',
     newsletter: {
       title: 'Blijf op de hoogte',
       placeholder: 'Je email adres',

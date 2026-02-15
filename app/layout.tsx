@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "OfferteHulp - Offerte-software voor timmerbedrijven",
-    template: "%s | OfferteHulp",
+    default: "Calvora - Offerte-software voor timmerbedrijven",
+    template: "%s | Calvora",
   },
   description:
     "Maak professionele offertes in 6 stappen. Beheer projecten, facturen en winst in één platform. Speciaal voor timmerbedrijven en aannemers.",
@@ -30,11 +30,11 @@ export const metadata: Metadata = {
     "facturen",
     "projectbeheer bouw",
   ],
-  authors: [{ name: "OfferteHulp" }],
+  authors: [{ name: "Calvora" }],
   openGraph: {
     type: "website",
     locale: "nl_NL",
-    siteName: "OfferteHulp",
+    siteName: "Calvora",
   },
 };
 

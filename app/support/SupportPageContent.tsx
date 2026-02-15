@@ -44,7 +44,7 @@ export function SupportPageContent() {
                 >
                   <ScreenshotViewer
                     src={supportScreenshots[i]}
-                    alt={`OfferteHulp - ${option.title}`}
+                    alt={`Calvora - ${option.title}`}
                   />
                   <div className="p-6">
                     <div className="flex items-center gap-3 mb-3">

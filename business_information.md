@@ -1,4 +1,4 @@
-# Business Information: "Studio" / Offertehulp
+# Business Information: "Studio" / Calvora
 
 ## 1. Executive Summary
 This application is a specialized **Estimation & Planning Platform** tailored for Dutch carpenters ("timmermannen") and renovation contractors. It bridges the gap between rough estimates and professional, profitable quoting. By combining technical calculation wizards with business management tools, it transforms a craftsman's knowledge into accurate material lists, precise labor estimates, and visually stunning proposals.

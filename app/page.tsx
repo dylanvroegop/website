@@ -35,7 +35,7 @@ export default function Home() {
             </p>
 
             <p className="mt-4 text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-              OfferteHulp helpt je professionele offertes maken, klussen beheren en grip houden op je winst.
+              Calvora helpt je professionele offertes maken, klussen beheren en grip houden op je winst.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
@@ -79,7 +79,7 @@ export default function Home() {
               Herken je dit?
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              De meeste timmerbedrijven worstelen met dezelfde problemen. OfferteHulp lost ze op.
+              De meeste timmerbedrijven worstelen met dezelfde problemen. Calvora lost ze op.
             </p>
           </motion.div>
 
@@ -218,7 +218,7 @@ export default function Home() {
           {/* Workflow screenshot */}
           <ScreenshotViewer
             src="/screenshots/workflow/stap-4-materialen.png"
-            alt="OfferteHulp Calculatie Stap 4 - Materialen selecteren"
+            alt="Calvora Calculatie Stap 4 - Materialen selecteren"
             caption="Stap 4: Stel je materiaallijst samen met werkpakketten of custom materialen"
           />
 

@@ -65,7 +65,7 @@ export function ProductPageContent() {
               {/* Screenshot */}
               <ScreenshotViewer
                 src={cap.screenshot}
-                alt={`OfferteHulp - ${cap.title}`}
+                alt={`Calvora - ${cap.title}`}
               />
             </div>
           </div>

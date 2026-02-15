@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${module.name} - ${module.description}`,
-    description: `${module.description}. ${module.features.slice(0, 3).join(". ")}. Onderdeel van OfferteHulp, de complete offerte-software voor timmerbedrijven.`,
+    description: `${module.description}. ${module.features.slice(0, 3).join(". ")}. Onderdeel van Calvora, de complete offerte-software voor timmerbedrijven.`,
   };
 }
 

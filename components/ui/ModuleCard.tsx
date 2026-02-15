@@ -72,7 +72,7 @@ export function ModuleCard({
       <div className="relative aspect-[16/10] overflow-hidden bg-dark-surface">
         <Image
           src={screenshot}
-          alt={`OfferteHulp ${name} - ${description}`}
+          alt={`Calvora ${name} - ${description}`}
           fill
           className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

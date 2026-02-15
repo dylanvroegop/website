@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   Menu,
@@ -44,12 +45,16 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary rounded flex items-center justify-center font-bold text-white text-xl">
-              O
-            </div>
+          <a href="/" className="flex items-center gap-3">
+            <Image
+              src="/logo_calvora_transparent.png"
+              alt="Calvora logo"
+              width={45}
+              height={45}
+              className="w-[45px] h-[45px] mix-blend-screen"
+            />
             <span className="text-xl font-bold text-white tracking-tight">
-              Offertehulp
+              Calvora
             </span>
           </a>
 

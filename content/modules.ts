@@ -230,7 +230,7 @@ export const modules: Module[] = [
       'Bouwplaatskosten pakketten',
       'Planning defaults (werkuren, werkdagen, auto-split)'
     ],
-    userStory: 'Stel OfferteHulp in naar jouw bedrijf. Upload je logo, stel je standaard winstmarge in, en configureer je offerte-/factuurnummering. Eenmalig instellen, altijd gebruiken.',
+    userStory: 'Stel Calvora in naar jouw bedrijf. Upload je logo, stel je standaard winstmarge in, en configureer je offerte-/factuurnummering. Eenmalig instellen, altijd gebruiken.',
     dataSource: ['users.settings', 'businesses'],
     relatedModules: ['facturen', 'offertes', 'planning', 'producten']
   }

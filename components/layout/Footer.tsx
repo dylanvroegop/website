@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { siteCopy } from "@/content/copy";
 
 export function Footer() {
@@ -88,10 +89,14 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-primary rounded flex items-center justify-center font-bold text-white text-xs">
-              O
-            </div>
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo_calvora_transparent.png"
+              alt="Calvora logo"
+              width={30}
+              height={30}
+              className="w-[30px] h-[30px] mix-blend-screen"
+            />
             <span className="text-sm text-gray-500">{footer.copyright}</span>
           </div>
         </div>

@@ -13,7 +13,7 @@ export function HeroDevices() {
     >
       <Image
         src="/hero-website-picture.png"
-        alt="OfferteHulp platform op desktop, laptop, tablet en mobiel"
+        alt="Calvora platform op desktop, laptop, tablet en mobiel"
         width={1920}
         height={1080}
         className="w-full h-auto"

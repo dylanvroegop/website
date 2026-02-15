@@ -67,7 +67,7 @@ export function ModuleDetailContent({ module }: { module: Module }) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScreenshotViewer
             src={module.screenshot}
-            alt={`OfferteHulp ${module.name} - ${module.description}`}
+            alt={`Calvora ${module.name} - ${module.description}`}
             priority
           />
         </div>
@@ -215,7 +215,7 @@ export function ModuleDetailContent({ module }: { module: Module }) {
 
       <CTASection
         title="Probeer deze module"
-        subtitle={`Ontdek ${module.name} en alle andere modules in OfferteHulp`}
+        subtitle={`Ontdek ${module.name} en alle andere modules in Calvora`}
         primaryCTA="Plan een demo"
         primaryHref="/contact"
         secondaryCTA="Start proefperiode"

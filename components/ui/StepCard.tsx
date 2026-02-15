@@ -77,7 +77,7 @@ export function StepCard({
         <div className="relative aspect-[16/10] rounded-lg overflow-hidden bg-dark-surface border border-white/5">
           <Image
             src={screenshot}
-            alt={`OfferteHulp Calculatie Stap ${number} - ${title}`}
+            alt={`Calvora Calculatie Stap ${number} - ${title}`}
             fill
             className="object-cover object-top"
             sizes="(max-width: 768px) 100vw, 50vw"
