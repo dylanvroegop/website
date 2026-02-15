@@ -162,6 +162,13 @@ export function Navbar() {
             </div>
 
             <a
+              href="/prijzen"
+              className="text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
+            >
+              Prijzen
+            </a>
+
+            <a
               href="/support"
               className="text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
             >
@@ -230,6 +237,12 @@ export function Navbar() {
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Modules
+              </a>
+              <a
+                href="/prijzen"
+                className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
+              >
+                Prijzen
               </a>
               <a
                 href="/support"

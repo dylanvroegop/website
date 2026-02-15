@@ -327,7 +327,8 @@ export const siteCopy = {
       links: [
         { label: 'Platform overzicht', href: '/product' },
         { label: '6-stappen workflow', href: '/workflow' },
-        { label: 'Alle modules', href: '/modules' }
+        { label: 'Alle modules', href: '/modules' },
+        { label: 'Prijzen', href: '/prijzen' }
       ]
     },
     modules: {
