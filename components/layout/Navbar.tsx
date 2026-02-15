@@ -45,16 +45,13 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-3">
-            <Image
-              src="/logo_calvora_transparent.png"
-              alt="Calvora logo"
-              width={45}
-              height={45}
-              className="w-[45px] h-[45px] mix-blend-screen"
-            />
-            <span className="text-xl font-bold text-white tracking-tight">
-              Calvora
+          {/* Logo */}
+          <a href="/" className="flex flex-col select-none group no-underline hover:opacity-90 transition-opacity">
+            <span className="text-2xl font-black tracking-tight text-[hsl(158,93%,40%)] uppercase leading-none">
+              CALVORA
+            </span>
+            <span className="text-[0.55rem] font-bold text-[hsl(158,93%,40%)] tracking-[0.2em] uppercase leading-none mt-1">
+              BOUWSOFTWARE. CALCULATIE. WINST.
             </span>
           </a>
 

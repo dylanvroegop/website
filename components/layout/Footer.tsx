@@ -90,13 +90,14 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <Image
-              src="/logo_calvora_transparent.png"
-              alt="Calvora logo"
-              width={30}
-              height={30}
-              className="w-[30px] h-[30px] mix-blend-screen"
-            />
+            <a href="/" className="flex flex-col select-none group no-underline hover:opacity-90 transition-opacity">
+              <span className="text-xl font-black tracking-tight text-[hsl(158,93%,40%)] uppercase leading-none opacity-80 group-hover:opacity-100 transition-opacity">
+                CALVORA
+              </span>
+              <span className="text-[0.45rem] font-bold text-[hsl(158,93%,40%)] tracking-[0.2em] uppercase leading-none mt-1 opacity-70 group-hover:opacity-100 transition-opacity">
+                BOUWSOFTWARE. CALCULATIE. WINST.
+              </span>
+            </a>
             <span className="text-sm text-gray-500">{footer.copyright}</span>
           </div>
         </div>
