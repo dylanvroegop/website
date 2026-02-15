@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe, PRICE_IDS, isValidPlan } from "@/lib/stripe";
+import { getStripe, getPriceId, isValidPlan } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const priceId = PRICE_IDS[plan];
+    const priceId = getPriceId(plan);
 
     if (!priceId) {
       console.error(`Missing price ID for plan: ${plan}`);
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const siteUrl =
       process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${siteUrl}/betaling/succes?session_id={CHECKOUT_SESSION_ID}`,
