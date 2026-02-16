@@ -101,15 +101,14 @@ export const siteCopy = {
 
   // Workflow teaser
   workflowTeaser: {
-    title: 'Van idee tot offerte in 6 stappen',
+    title: 'Van idee tot offerte in 5 stappen',
     subtitle: 'Onze wizard leidt je door elke stap voor accurate en professionele offertes',
     cta: 'Bekijk de volledige workflow',
     steps: [
       'Klant',
       'Klus',
-      'Type',
       'Materialen',
-      'Metingen',
+      'Maatwerk',
       'Overzicht'
     ]
   },
