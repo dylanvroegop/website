@@ -3,12 +3,12 @@
 export const siteCopy = {
   // Hero section
   hero: {
-    badge: 'Nieuw: AI-Gestuurde Calculaties',
-    title: 'Offerte-software voor timmerbedrijven die meer willen',
-    titleHighlight: 'meer willen',
-    subtitle: 'Van calculatie tot factuur in één platform. Calvora helpt je professionele offertes maken, klussen beheren en grip houden op je winst.',
-    primaryCTA: 'Plan een demo',
-    secondaryCTA: 'Start proefperiode'
+    badge: '',
+    title: 'Offertes in 10 minuten. Speciaal voor timmermannen.',
+    titleHighlight: 'Speciaal voor timmermannen.',
+    subtitle: 'Calvora zet jouw maten en werkwijze om in een technisch nette offerte met actuele prijzen, klein materiaal, transport en marge. Zonder gedoe.',
+    primaryCTA: 'Start gratis proef',
+    secondaryCTA: 'Bekijk voorbeeld-offerte'
   },
 
   // Problem/Solution section
@@ -122,15 +122,14 @@ export const siteCopy = {
 
   // Final CTA
   finalCTA: {
-    title: 'Klaar om te starten?',
-    subtitle: 'Sluit je aan bij timmerbedrijven die Calvora al gebruiken',
-    primaryCTA: 'Plan een demo',
-    secondaryCTA: 'Start 14-daagse proefperiode',
+    title: 'Maak vandaag nog je eerste offerte in 10 minuten.',
+    subtitle: '',
+    primaryCTA: 'Start gratis proef',
+    secondaryCTA: 'Bekijk voorbeeld-offerte',
     benefits: [
-      'Geen creditcard vereist',
-      '14 dagen gratis proberen',
-      'Volledige functionaliteit',
-      'Nederlandse support'
+      'Geen creditcard nodig',
+      'Binnen 10 min live',
+      'Opzeggen wanneer je wil'
     ]
   },
 
