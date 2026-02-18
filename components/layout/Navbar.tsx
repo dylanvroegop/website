@@ -181,7 +181,7 @@ export function Navbar() {
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="/contact"
+              href="https://app.calvora.nl/login"
               className="text-sm font-medium text-white hover:text-primary transition-colors px-4 py-2 border border-white/10 rounded-lg hover:bg-white/5"
             >
               Inloggen
@@ -255,7 +255,7 @@ export function Navbar() {
 
               <div className="pt-4 flex flex-col gap-3 border-t border-white/10 mt-3">
                 <a
-                  href="/contact"
+                  href="https://app.calvora.nl/login"
                   className="w-full text-center text-white border border-white/10 py-2.5 rounded-lg hover:bg-white/5 transition-colors"
                 >
                   Inloggen
