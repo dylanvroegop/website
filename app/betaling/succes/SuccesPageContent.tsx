@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 import { Suspense } from "react";
@@ -8,6 +9,18 @@ import { Suspense } from "react";
 function SuccesContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+
+  const appLoginUrl = sessionId
+    ? `https://app.calvora.nl/login?session_id=${encodeURIComponent(sessionId)}`
+    : "https://app.calvora.nl/login";
+
+  // Auto-redirect to app after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.location.href = appLoginUrl;
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [appLoginUrl]);
 
   return (
     <section className="min-h-[80vh] flex items-center justify-center py-20">
@@ -24,17 +37,20 @@ function SuccesContent() {
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Betaling gelukt!
           </h1>
-          <p className="text-gray-400 mb-8">
+          <p className="text-gray-400 mb-2">
             Je abonnement is succesvol geactiveerd. Je ontvangt een
             bevestiging per e-mail.
+          </p>
+          <p className="text-gray-500 text-sm mb-8">
+            Je wordt automatisch doorgestuurd naar de app...
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://app.calvora.nl"
+              href={appLoginUrl}
               className="group inline-flex items-center justify-center gap-2 bg-primary text-white hover:brightness-110 px-8 py-3.5 rounded-lg font-bold transition-all emerald-glow"
             >
-              Inloggen
+              Ga naar de app
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
             <a

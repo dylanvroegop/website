@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Check,
@@ -9,10 +10,12 @@ import {
   Sparkles,
   Zap,
   Building2,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { CTASection } from "@/components/ui/CTASection";
+import { useAuth } from "@/lib/auth-context";
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -117,6 +120,21 @@ const faqs = [
 export function PrijzenPageContent() {
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Auto-trigger checkout if user just logged in and has a plan param
+  const planParam = searchParams.get("plan");
+  const [autoTriggered, setAutoTriggered] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading && user && planParam && !autoTriggered) {
+      setAutoTriggered(true);
+      handleCheckout(planParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user, planParam]);
 
   async function handleCheckout(planId: string) {
     // Enterprise → redirect to contact / demo
@@ -125,11 +143,22 @@ export function PrijzenPageContent() {
       return;
     }
 
+    // Not logged in → redirect to login
+    if (!user) {
+      router.push(`/inloggen?next=/prijzen&plan=${planId}`);
+      return;
+    }
+
     setLoadingPlan(planId);
     try {
+      const idToken = await user.getIdToken();
+
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
         body: JSON.stringify({ plan: planId }),
       });
       const data = await res.json();
@@ -159,6 +188,31 @@ export function PrijzenPageContent() {
           { label: "Prijzen", href: "/prijzen" },
         ]}
       />
+
+      {/* Auth status banner */}
+      {!authLoading && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {user ? (
+            <div className="flex items-center gap-2 text-sm text-gray-400 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 w-fit">
+              <User className="w-4 h-4 text-primary" />
+              <span>
+                Ingelogd als{" "}
+                <span className="text-white font-medium">{user.email}</span>
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-sm text-gray-400 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 w-fit">
+              <User className="w-4 h-4" />
+              <span>
+                <a href="/inloggen?next=/prijzen" className="text-primary hover:underline font-medium">
+                  Log in
+                </a>
+                {" "}om door te gaan naar betaling
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Pricing cards */}
       <section className="relative py-16 lg:py-24">
