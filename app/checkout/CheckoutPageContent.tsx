@@ -25,9 +25,11 @@ const planDetails: Record<string, { name: string; price: string; priceNum: numbe
 function CheckoutForm({
   plan,
   subscriptionId,
+  intentType,
 }: {
   plan: string;
   subscriptionId: string;
+  intentType: "payment" | "setup";
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -35,11 +37,8 @@ function CheckoutForm({
   const [error, setError] = useState<string | null>(null);
   const [agreedTerms, setAgreedTerms] = useState(false);
 
-  const details = planDetails[plan];
-  const btwAmount = (details.priceNum * 0.21).toFixed(2).replace(".", ",");
-  const inclBtw = (details.priceNum * 1.21).toFixed(2).replace(".", ",");
-
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
+  const returnUrl = `${siteUrl}/betaling/succes?session_id=${subscriptionId}`;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -53,17 +52,22 @@ function CheckoutForm({
     setSubmitting(true);
     setError(null);
 
-    const { error: stripeError } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${siteUrl}/betaling/succes?session_id=${subscriptionId}`,
-      },
-    });
+    // Use confirmSetup for trial subscriptions, confirmPayment for immediate charge
+    const result =
+      intentType === "setup"
+        ? await stripe.confirmSetup({
+            elements,
+            confirmParams: { return_url: returnUrl },
+          })
+        : await stripe.confirmPayment({
+            elements,
+            confirmParams: { return_url: returnUrl },
+          });
 
-    // If confirmPayment returns, it means there was an error
-    // (successful payments redirect automatically)
-    if (stripeError) {
-      setError(stripeError.message || "Er ging iets mis met de betaling.");
+    // If we get here, it means there was an error
+    // (successful confirmations redirect automatically)
+    if (result.error) {
+      setError(result.error.message || "Er ging iets mis met de betaling.");
     }
     setSubmitting(false);
   }
@@ -362,6 +366,7 @@ function CheckoutContent() {
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [subscriptionId, setSubscriptionId] = useState<string | null>(null);
+  const [intentType, setIntentType] = useState<"payment" | "setup">("payment");
   const [creatingSubscription, setCreatingSubscription] = useState(false);
   const [apiError, setApiError] = useState<string | null>(null);
 
@@ -427,6 +432,7 @@ function CheckoutContent() {
 
       setClientSecret(data.clientSecret);
       setSubscriptionId(data.subscriptionId);
+      setIntentType(data.intentType || "payment");
     } catch {
       setApiError("Kan geen verbinding maken met de server.");
     } finally {
@@ -550,7 +556,7 @@ function CheckoutContent() {
                   },
                 }}
               >
-                <CheckoutForm plan={plan} subscriptionId={subscriptionId!} />
+                <CheckoutForm plan={plan} subscriptionId={subscriptionId!} intentType={intentType} />
               </Elements>
             )}
           </div>

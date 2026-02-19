@@ -90,13 +90,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (customer) {
-      // Update existing customer
       customer = await stripe.customers.update(customer.id, customerData);
     } else {
       customer = await stripe.customers.create(customerData);
     }
 
     // --- Create Subscription ---
+    // Use pending_setup_intent for trial subscriptions (no immediate charge),
+    // or latest_invoice.payment_intent for immediate-charge subscriptions.
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: priceId }],
@@ -108,15 +109,35 @@ export async function POST(request: NextRequest) {
         firebaseUid: uid,
         plan,
       },
-      expand: ["latest_invoice.payment_intent"],
+      expand: ["latest_invoice.payment_intent", "pending_setup_intent"],
     });
 
+    // Determine client_secret: either from PaymentIntent (no trial) or SetupIntent (trial)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const invoice = subscription.latest_invoice as any;
     const paymentIntent = invoice?.payment_intent as Stripe.PaymentIntent | undefined;
+    const setupIntent = subscription.pending_setup_intent as Stripe.SetupIntent | undefined;
 
-    if (!paymentIntent?.client_secret) {
-      console.error("[Stripe] No client_secret on payment intent");
+    let clientSecret: string | undefined;
+    let intentType: "payment" | "setup" = "payment";
+
+    if (paymentIntent?.client_secret) {
+      // No trial — charge immediately
+      clientSecret = paymentIntent.client_secret;
+      intentType = "payment";
+    } else if (setupIntent?.client_secret) {
+      // Trial — save payment method for later
+      clientSecret = setupIntent.client_secret;
+      intentType = "setup";
+    }
+
+    if (!clientSecret) {
+      console.error("[Stripe] No client_secret found", {
+        subscriptionId: subscription.id,
+        subscriptionStatus: subscription.status,
+        hasPaymentIntent: !!paymentIntent,
+        hasSetupIntent: !!setupIntent,
+      });
       return NextResponse.json(
         { error: "Kon geen betaling aanmaken. Probeer het opnieuw." },
         { status: 500 }
@@ -130,13 +151,15 @@ export async function POST(request: NextRequest) {
       plan,
       subscriptionId: subscription.id,
       customerId: customer.id,
+      intentType,
       uid,
       mode: keyPrefix,
     });
 
     return NextResponse.json({
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent.client_secret,
+      clientSecret,
+      intentType,
     });
   } catch (err) {
     console.error("Stripe subscription error:", err);
