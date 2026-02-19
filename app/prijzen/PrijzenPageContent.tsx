@@ -118,7 +118,6 @@ const faqs = [
 /* ------------------------------------------------------------------ */
 
 export function PrijzenPageContent() {
-  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -136,45 +135,21 @@ export function PrijzenPageContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authLoading, user, planParam]);
 
-  async function handleCheckout(planId: string) {
+  function handleCheckout(planId: string) {
     // Enterprise → redirect to contact / demo
     if (planId === "enterprise") {
       window.location.href = "/contact";
       return;
     }
 
-    // Not logged in → redirect to login
+    // Not logged in → redirect to login, then to checkout
     if (!user) {
-      router.push(`/inloggen?next=/prijzen&plan=${planId}`);
+      router.push(`/inloggen?next=/checkout&plan=${planId}`);
       return;
     }
 
-    setLoadingPlan(planId);
-    try {
-      const idToken = await user.getIdToken();
-
-      const res = await fetch("/api/stripe/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-        body: JSON.stringify({ plan: planId }),
-      });
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.error || "Er ging iets mis. Probeer het opnieuw.");
-        return;
-      }
-
-      // Redirect to Stripe hosted checkout
-      window.location.href = data.url;
-    } catch {
-      alert("Kan geen verbinding maken met de server. Probeer het later opnieuw.");
-    } finally {
-      setLoadingPlan(null);
-    }
+    // Redirect to custom checkout page
+    router.push(`/checkout?plan=${planId}`);
   }
 
   return (
@@ -286,16 +261,14 @@ export function PrijzenPageContent() {
                 {/* CTA */}
                 <button
                   onClick={() => handleCheckout(plan.id)}
-                  disabled={loadingPlan === plan.id}
                   className={cn(
                     "group w-full inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-sm font-bold transition-all",
                     plan.popular
                       ? "bg-primary text-white hover:brightness-110 emerald-glow"
-                      : "border border-white/10 text-white hover:bg-white/5",
-                    loadingPlan === plan.id && "opacity-70 cursor-wait"
+                      : "border border-white/10 text-white hover:bg-white/5"
                   )}
                 >
-                  {loadingPlan === plan.id ? "Even geduld..." : plan.cta}
+                  {plan.cta}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </motion.div>
