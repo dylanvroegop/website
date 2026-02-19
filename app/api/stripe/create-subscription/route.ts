@@ -127,6 +127,7 @@ export async function POST(request: NextRequest) {
       // Trial subscription — create a SetupIntent to collect payment method
       const setupIntent = await stripe.setupIntents.create({
         customer: customer.id,
+        automatic_payment_methods: { enabled: true },
         metadata: {
           firebaseUid: uid,
           subscriptionId: subscription.id,
