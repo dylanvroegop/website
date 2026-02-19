@@ -96,8 +96,6 @@ export async function POST(request: NextRequest) {
     }
 
     // --- Create Subscription ---
-    // Use pending_setup_intent for trial subscriptions (no immediate charge),
-    // or latest_invoice.payment_intent for immediate-charge subscriptions.
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: priceId }],
@@ -109,39 +107,33 @@ export async function POST(request: NextRequest) {
         firebaseUid: uid,
         plan,
       },
-      expand: ["latest_invoice.payment_intent", "pending_setup_intent"],
+      expand: ["latest_invoice.payment_intent"],
     });
 
-    // Determine client_secret: either from PaymentIntent (no trial) or SetupIntent (trial)
+    // Determine client_secret:
+    // - No trial → PaymentIntent on the invoice
+    // - Trial → no PaymentIntent, so create a SetupIntent to save payment method
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const invoice = subscription.latest_invoice as any;
     const paymentIntent = invoice?.payment_intent as Stripe.PaymentIntent | undefined;
-    const setupIntent = subscription.pending_setup_intent as Stripe.SetupIntent | undefined;
 
     let clientSecret: string | undefined;
     let intentType: "payment" | "setup" = "payment";
 
     if (paymentIntent?.client_secret) {
-      // No trial — charge immediately
       clientSecret = paymentIntent.client_secret;
       intentType = "payment";
-    } else if (setupIntent?.client_secret) {
-      // Trial — save payment method for later
-      clientSecret = setupIntent.client_secret;
-      intentType = "setup";
-    }
-
-    if (!clientSecret) {
-      console.error("[Stripe] No client_secret found", {
-        subscriptionId: subscription.id,
-        subscriptionStatus: subscription.status,
-        hasPaymentIntent: !!paymentIntent,
-        hasSetupIntent: !!setupIntent,
+    } else {
+      // Trial subscription — create a SetupIntent to collect payment method
+      const setupIntent = await stripe.setupIntents.create({
+        customer: customer.id,
+        metadata: {
+          firebaseUid: uid,
+          subscriptionId: subscription.id,
+        },
       });
-      return NextResponse.json(
-        { error: "Kon geen betaling aanmaken. Probeer het opnieuw." },
-        { status: 500 }
-      );
+      clientSecret = setupIntent.client_secret!;
+      intentType = "setup";
     }
 
     const keyPrefix =
