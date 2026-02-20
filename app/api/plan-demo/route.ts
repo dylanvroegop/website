@@ -23,13 +23,23 @@ export async function POST(request: NextRequest) {
     }
 
     const webhookUrl = process.env.N8N_PLAN_DEMO_WEBHOOK_URL || DEFAULT_WEBHOOK_URL;
-    const secretHeader = process.env.N8N_PLAN_DEMO_SECRET_HEADER || "secret";
+    const secretHeader =
+      process.env.N8N_PLAN_DEMO_SECRET_HEADER || "x-offertehulp-secret";
     const secretValue =
       process.env.N8N_HEADER_SECRET ||
       process.env.N8N_PLAN_DEMO_SECRET ||
       process.env.N8N_WEBHOOK_SECRET ||
-      process.env.WEBHOOK_SECRET ||
-      "secret";
+      process.env.WEBHOOK_SECRET;
+
+    if (!secretValue) {
+      return NextResponse.json(
+        {
+          error:
+            "N8N secret ontbreekt op de server (verwacht N8N_HEADER_SECRET).",
+        },
+        { status: 500 }
+      );
+    }
 
     const payload = {
       naam,
@@ -55,6 +65,10 @@ export async function POST(request: NextRequest) {
         headers: {
           "Content-Type": "application/json",
           [secretHeader]: secretValue,
+          // Compatibility headers for existing n8n Header Auth credentials
+          secret: secretValue,
+          "x-n8n-secret": secretValue,
+          "x-webhook-secret": secretValue,
         },
         body: JSON.stringify(payload),
         cache: "no-store",
