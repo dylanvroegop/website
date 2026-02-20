@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { cn } from "@/lib/utils";
 import {
   Menu,
@@ -44,7 +43,6 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
           {/* Logo */}
           <a href="/" className="flex flex-col select-none group no-underline hover:opacity-90 transition-opacity">
             <span className="text-2xl font-black tracking-tight text-[hsl(158,93%,40%)] uppercase leading-none">

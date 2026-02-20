@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowRight, FileCheck, Clock, ShieldCheck, TrendingUp } from "lucide-react";
+import { ArrowRight, PhoneCall, Clock, ShieldCheck, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ExampleOfferModal } from "./ExampleOfferModal";
 
 const heroBullets = [
   { icon: Clock, text: "Bespaart 1–2 uur per offerte" },
@@ -19,8 +17,6 @@ const microTrust = [
 ];
 
 export function HeroSection() {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <>
       <section className="relative pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden bg-black">
@@ -63,23 +59,23 @@ export function HeroSection() {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
                 <a
-                  href="/contact"
+                  href="/prijzen"
                   className="group bg-primary text-white hover:brightness-110 px-8 py-4 rounded-lg text-lg font-bold transition-all emerald-glow flex items-center justify-center gap-2"
                 >
-                  Start gratis proef
+                  Probeer 14 dagen gratis
                   <ArrowRight
                     size={20}
                     className="group-hover:translate-x-1 transition-transform"
                   />
                 </a>
-                <button
-                  onClick={() => setModalOpen(true)}
+                <a
+                  href="/contact"
                   className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg text-lg font-bold text-white border border-white/10 hover:bg-white/5 transition-colors"
-                  aria-label="Bekijk een voorbeeld offerte"
+                  aria-label="Plan een gesprek"
                 >
-                  <FileCheck size={18} />
-                  Bekijk voorbeeld-offerte
-                </button>
+                  <PhoneCall size={18} />
+                  Plan een gesprek
+                </a>
               </div>
 
               {/* Micro-trust */}
@@ -110,10 +106,6 @@ export function HeroSection() {
         </div>
       </section>
 
-      <ExampleOfferModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
     </>
   );
 }

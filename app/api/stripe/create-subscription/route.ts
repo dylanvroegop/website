@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getStripe, getPriceId, isValidPlan } from "@/lib/stripe";
-import { verifyIdToken } from "@/lib/firebase-admin";
+import { FirebaseAdminConfigError, verifyIdToken } from "@/lib/firebase-admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,7 +18,17 @@ export async function POST(request: NextRequest) {
     let decodedToken;
     try {
       decodedToken = await verifyIdToken(idToken);
-    } catch {
+    } catch (error) {
+      if (error instanceof FirebaseAdminConfigError) {
+        console.error("Firebase Admin config error:", error.message);
+        return NextResponse.json(
+          {
+            error:
+              "Serverconfig ontbreekt voor Firebase (FIREBASE_CLIENT_EMAIL/FIREBASE_PRIVATE_KEY). Werk .env.local bij en herstart de server.",
+          },
+          { status: 500 }
+        );
+      }
       return NextResponse.json(
         { error: "Ongeldige sessie. Log opnieuw in." },
         { status: 401 }
@@ -50,6 +60,18 @@ export async function POST(request: NextRequest) {
 
     const stripe = getStripe();
 
+    // iDEAL/SEPA subscriptions require EUR prices.
+    const price = await stripe.prices.retrieve(priceId);
+    if (price.currency?.toLowerCase() !== "eur") {
+      return NextResponse.json(
+        {
+          error:
+            "Deze abonnementsprijs staat niet in EUR. iDEAL/SEPA voor abonnementen vereist een EUR-prijs in Stripe.",
+        },
+        { status: 400 }
+      );
+    }
+
     // --- Find or create Stripe Customer ---
     const customerEmail = customerDetails?.email || email;
     let customer: Stripe.Customer | undefined;
@@ -67,18 +89,20 @@ export async function POST(request: NextRequest) {
 
     const customerData: Stripe.CustomerCreateParams = {
       email: customerEmail,
-      name: [customerDetails?.firstName, customerDetails?.lastName]
-        .filter(Boolean)
-        .join(" ") || undefined,
+      name:
+        [customerDetails?.firstName, customerDetails?.lastName]
+          .filter(Boolean)
+          .join(" ") || undefined,
       metadata: { firebaseUid: uid },
     };
 
     // Add address if provided
     if (customerDetails?.street || customerDetails?.postalCode) {
       customerData.address = {
-        line1: [customerDetails.street, customerDetails.houseNumber]
-          .filter(Boolean)
-          .join(" ") || undefined,
+        line1:
+          [customerDetails.street, customerDetails.houseNumber]
+            .filter(Boolean)
+            .join(" ") || undefined,
         postal_code: customerDetails.postalCode || undefined,
         city: customerDetails.city || undefined,
         country: customerDetails.country || "NL",
@@ -124,10 +148,12 @@ export async function POST(request: NextRequest) {
       clientSecret = paymentIntent.client_secret;
       intentType = "payment";
     } else {
-      // Trial subscription — create a SetupIntent to collect payment method
+      // Trial subscription — iDEAL is a redirect payment method and does not appear on SetupIntent.
+      // Limit trial setup collection to reusable methods.
       const setupIntent = await stripe.setupIntents.create({
         customer: customer.id,
-        automatic_payment_methods: { enabled: true },
+        payment_method_types: ["card", "sepa_debit"],
+        usage: "off_session",
         metadata: {
           firebaseUid: uid,
           subscriptionId: subscription.id,
@@ -142,9 +168,11 @@ export async function POST(request: NextRequest) {
 
     console.log("[Stripe Subscription] Created", {
       plan,
+      priceCurrency: price.currency,
       subscriptionId: subscription.id,
       customerId: customer.id,
       intentType,
+      paymentMethodTypes: paymentIntent?.payment_method_types,
       uid,
       mode: keyPrefix,
     });
@@ -156,8 +184,15 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error("Stripe subscription error:", err);
+
+    const stripeErr = err as Stripe.StripeRawError | undefined;
+    const isDev = process.env.NODE_ENV !== "production";
+    const baseMessage = "Er ging iets mis bij het aanmaken van het abonnement.";
+
     return NextResponse.json(
-      { error: "Er ging iets mis bij het aanmaken van het abonnement." },
+      {
+        error: isDev && stripeErr?.message ? `${baseMessage} (${stripeErr.message})` : baseMessage,
+      },
       { status: 500 }
     );
   }

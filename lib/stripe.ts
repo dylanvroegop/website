@@ -22,6 +22,11 @@ export function getPriceId(plan: PlanId): string {
   return map[plan]!;
 }
 
+export function getOnboardingPriceId(plan: PlanId): string | undefined {
+  if (plan === "zzp") return process.env.PRICE_ZZP_ONBOARDING;
+  return undefined;
+}
+
 export function isValidPlan(plan: string): plan is PlanId {
   return plan === "zzp" || plan === "pro" || plan === "enterprise";
 }

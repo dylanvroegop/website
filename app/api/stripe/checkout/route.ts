@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { getStripe, getPriceId, isValidPlan } from "@/lib/stripe";
-import { verifyIdToken } from "@/lib/firebase-admin";
+import { getStripe, getPriceId, getOnboardingPriceId, isValidPlan } from "@/lib/stripe";
+import { FirebaseAdminConfigError, verifyIdToken } from "@/lib/firebase-admin";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,7 +18,17 @@ export async function POST(request: NextRequest) {
     let decodedToken;
     try {
       decodedToken = await verifyIdToken(idToken);
-    } catch {
+    } catch (error) {
+      if (error instanceof FirebaseAdminConfigError) {
+        console.error("Firebase Admin config error:", error.message);
+        return NextResponse.json(
+          {
+            error:
+              "Serverconfig ontbreekt voor Firebase (FIREBASE_CLIENT_EMAIL/FIREBASE_PRIVATE_KEY). Werk .env.local bij en herstart de server.",
+          },
+          { status: 500 }
+        );
+      }
       return NextResponse.json(
         { error: "Ongeldige sessie. Log opnieuw in." },
         { status: 401 }
@@ -40,6 +50,7 @@ export async function POST(request: NextRequest) {
     }
 
     const priceId = getPriceId(plan);
+    const onboardingPriceId = getOnboardingPriceId(plan);
 
     if (!priceId) {
       console.error(`Missing price ID for plan: ${plan}`);
@@ -49,12 +60,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (plan === "zzp" && !onboardingPriceId) {
+      console.error("Missing onboarding price ID for zzp plan");
+      return NextResponse.json(
+        { error: "Opstartprijsconfiguratie ontbreekt voor ZZP pakket. Neem contact op met support." },
+        { status: 500 }
+      );
+    }
+
     const siteUrl =
       process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       mode: "subscription",
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [
+        { price: priceId, quantity: 1 },
+        ...(onboardingPriceId ? [{ price: onboardingPriceId, quantity: 1 }] : []),
+      ],
+      automatic_tax: {
+        enabled: true,
+      },
+      billing_address_collection: "required",
       success_url: `https://app.calvora.nl/login?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/prijzen`,
       client_reference_id: uid,

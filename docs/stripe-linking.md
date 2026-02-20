@@ -9,6 +9,7 @@ How paid users on the marketing website (`calvora.nl`) get unlocked in the app (
 | `STRIPE_SECRET_KEY` | Stripe secret key (`sk_test_…` or `sk_live_…`) |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
 | `PRICE_ZZP_MONTHLY` | Stripe Price ID for ZZP plan |
+| `PRICE_ZZP_ONBOARDING` | Stripe one-time Price ID for ZZP first invoice surcharge |
 | `PRICE_PRO_MONTHLY` | Stripe Price ID for Pro plan |
 | `PRICE_ENTERPRISE_MONTHLY` | Stripe Price ID for Enterprise plan |
 | `NEXT_PUBLIC_SITE_URL` | Base URL of this website (e.g. `https://calvora.nl`) |

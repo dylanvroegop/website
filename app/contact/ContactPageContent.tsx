@@ -9,10 +9,50 @@ import { siteCopy } from "@/content/copy";
 export function ContactPageContent() {
   const { contact } = siteCopy;
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormSubmitted(true);
+    setSubmitError(null);
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const payload = {
+        naam: String(formData.get("naam") || "").trim(),
+        bedrijfsnaam: String(formData.get("bedrijfsnaam") || "").trim(),
+        email: String(formData.get("email") || "").trim(),
+        telefoonnummer: String(formData.get("telefoonnummer") || "").trim(),
+        bericht: String(formData.get("bericht") || "").trim(),
+      };
+
+      const response = await fetch("/api/plan-demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(
+          typeof data?.error === "string"
+            ? data.error
+            : "Kon je aanvraag niet versturen."
+        );
+      }
+
+      setFormSubmitted(true);
+      e.currentTarget.reset();
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Er ging iets mis bij het versturen."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -138,11 +178,15 @@ export function ContactPageContent() {
 
                   <button
                     type="submit"
-                    className="group w-full bg-primary text-white hover:brightness-110 px-8 py-4 rounded-lg text-lg font-bold transition-all emerald-glow flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="group w-full bg-primary text-white hover:brightness-110 px-8 py-4 rounded-lg text-lg font-bold transition-all emerald-glow flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    {contact.demo.cta}
+                    {isSubmitting ? "Bezig met versturen..." : contact.demo.cta}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
+                  {submitError && (
+                    <p className="text-sm text-red-400">{submitError}</p>
+                  )}
                 </form>
               )}
             </motion.div>
