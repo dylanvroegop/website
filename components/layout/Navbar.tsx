@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
   Menu,
@@ -20,6 +21,7 @@ import {
   Settings,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 const moduleLinks = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/modules/dashboard" },
@@ -44,23 +46,18 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <a href="/" className="flex flex-col select-none group no-underline hover:opacity-90 transition-opacity">
-            <span className="text-2xl font-black tracking-tight text-[hsl(158,93%,40%)] uppercase leading-none">
-              CALVORA
-            </span>
-            <span className="text-[0.55rem] font-bold text-[hsl(158,93%,40%)] tracking-[0.2em] uppercase leading-none mt-1">
-              BOUWSOFTWARE. CALCULATIE. WINST.
-            </span>
-          </a>
+          <Link href="/" className="flex flex-col select-none group no-underline hover:opacity-90 transition-opacity">
+            <BrandLogo size="navbar" />
+          </Link>
 
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
-            <a
+            <Link
               href="/"
               className="text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
             >
               Home
-            </a>
+            </Link>
 
             {/* Platform dropdown */}
             <div
@@ -87,24 +84,24 @@ export function Navbar() {
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 mt-1 w-56 py-2 bg-[#18181b] border border-white/10 rounded-xl shadow-2xl"
                   >
-                    <a
+                    <Link
                       href="/product"
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
                     >
                       Platform overzicht
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="/workflow"
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
                     >
                       6-stappen workflow
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="/modules"
                       className="block px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
                     >
                       Alle modules
-                    </a>
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -137,43 +134,43 @@ export function Navbar() {
                   >
                     <div className="grid grid-cols-2 gap-1">
                       {moduleLinks.map((link) => (
-                        <a
+                        <Link
                           key={link.name}
                           href={link.href}
                           className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
                         >
                           <link.icon className="w-4 h-4 text-primary" />
                           {link.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                     <div className="mt-3 pt-3 border-t border-white/5">
-                      <a
+                      <Link
                         href="/modules"
                         className="flex items-center gap-2 px-3 py-2 text-sm text-primary font-medium hover:bg-primary/5 rounded-lg transition-colors"
                       >
                         Bekijk alle modules
                         <ArrowRight className="w-4 h-4" />
-                      </a>
+                      </Link>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <a
+            <Link
               href="/prijzen"
               className="text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
             >
               Prijzen
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/support"
               className="text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-white/5"
             >
               Support
-            </a>
+            </Link>
           </div>
 
           {/* Desktop CTAs */}
@@ -184,12 +181,12 @@ export function Navbar() {
             >
               Inloggen
             </a>
-            <a
+            <Link
               href="/contact"
               className="bg-primary text-white hover:brightness-110 px-5 py-2.5 rounded-lg text-sm font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]"
             >
               Plan demo
-            </a>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -214,42 +211,42 @@ export function Navbar() {
             className="lg:hidden bg-[#0a0a0a] border-b border-white/10 overflow-hidden"
           >
             <div className="px-4 py-4 space-y-1">
-              <a
+              <Link
                 href="/"
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Home
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/product"
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Platform
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/workflow"
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Workflow
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/modules"
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Modules
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/prijzen"
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Prijzen
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/support"
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-gray-300 hover:text-white hover:bg-white/5"
               >
                 Support
-              </a>
+              </Link>
 
               <div className="pt-4 flex flex-col gap-3 border-t border-white/10 mt-3">
                 <a
@@ -258,12 +255,12 @@ export function Navbar() {
                 >
                   Inloggen
                 </a>
-                <a
+                <Link
                   href="/contact"
                   className="w-full text-center bg-primary text-white font-bold py-2.5 rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.3)]"
                 >
                   Plan demo
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>

@@ -2,6 +2,56 @@ import { NextRequest, NextResponse } from "next/server";
 
 const DEFAULT_WEBHOOK_URL = "https://n8n.dylan8n.org/webhook-test/plan-demo";
 
+function buildOpsHubPayload(input: {
+  naam: string;
+  bedrijfsnaam: string;
+  email: string;
+  telefoonnummer: string;
+  bericht: string;
+  submittedAt: string;
+}) {
+  return {
+    naam: input.naam,
+    bedrijfsnaam: input.bedrijfsnaam,
+    email: input.email,
+    telefoonnummer: input.telefoonnummer,
+    bericht: input.bericht,
+    source: "website_contact",
+    submittedAt: input.submittedAt,
+  };
+}
+
+async function tryDeliverToOpsHub(options: {
+  payload: ReturnType<typeof buildOpsHubPayload>;
+  secretHeader: string;
+  secretValue: string;
+}) {
+  const url = process.env.OPS_HUB_DEMO_INGEST_URL?.trim();
+  if (!url) return;
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        [options.secretHeader]: options.secretValue,
+      },
+      body: JSON.stringify(options.payload),
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      console.error("Ops hub ingest failed", {
+        status: res.status,
+        body: text.slice(0, 500),
+      });
+    }
+  } catch (error) {
+    console.error("Ops hub ingest request crashed", error);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -41,6 +91,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const submittedAt = new Date().toISOString();
     const payload = {
       naam,
       bedrijfsnaam,
@@ -48,7 +99,7 @@ export async function POST(request: NextRequest) {
       telefoonnummer,
       bericht,
       source: "calvora-contact-form",
-      submittedAt: new Date().toISOString(),
+      submittedAt,
     };
 
     const candidateUrls = [webhookUrl];
@@ -65,7 +116,6 @@ export async function POST(request: NextRequest) {
         headers: {
           "Content-Type": "application/json",
           [secretHeader]: secretValue,
-          // Compatibility headers for existing n8n Header Auth credentials
           secret: secretValue,
           "x-n8n-secret": secretValue,
           "x-webhook-secret": secretValue,
@@ -105,6 +155,19 @@ export async function POST(request: NextRequest) {
         { status: 502 }
       );
     }
+
+    await tryDeliverToOpsHub({
+      payload: buildOpsHubPayload({
+        naam,
+        bedrijfsnaam,
+        email,
+        telefoonnummer,
+        bericht,
+        submittedAt,
+      }),
+      secretHeader,
+      secretValue,
+    });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

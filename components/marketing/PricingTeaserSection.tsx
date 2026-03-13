@@ -102,8 +102,8 @@ export function PricingTeaserSection() {
                 }`}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                  <div className="mb-3">
+                    <span className="inline-flex max-w-full items-center justify-center rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-white whitespace-nowrap">
                       Populairste keuze
                     </span>
                   </div>
