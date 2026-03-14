@@ -25,11 +25,12 @@ export function BrandLogo({ className, size = "navbar" }: BrandLogoProps) {
         )}
       >
         <span className="h-px bg-[hsl(158,93%,40%)]/60 w-6" aria-hidden="true" />
-        <span className="opacity-90">STOP MET GOKKEN.</span>
-        <span className="font-black">BEGIN MET VERDIENEN.</span>
+        <span className="flex items-center gap-1.5">
+          <span className="opacity-90">STOP MET GOKKEN.</span>
+          <span className="font-black">BEGIN MET VERDIENEN.</span>
+        </span>
         <span className="h-px bg-[hsl(158,93%,40%)]/60 w-6" aria-hidden="true" />
       </span>
     </div>
   );
 }
-
